@@ -35,6 +35,20 @@ function posts($limit = '0,12'){
 
 function post($id = 1){
     global $db;
+    if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+        $data = json_decode(file_get_contents('php://input'));
+        $title = $data->title;
+        $body = $data->body;
+        if ($db->updatePost($id,$title,$body)) {
+            header("HTTP/1.0 200 Updated successfully");
+            echo json_encode(['message'=>'Post Updated Successfully']);
+        }else {
+            header("HTTP/1.0 500 Something went wrong");
+            echo json_encode(['message_err'=>'Error 500']);
+        }
+        return;
+    }
+
     $data['data'] = $db->selectPostById($id);
     echo json_encode($data);
 }

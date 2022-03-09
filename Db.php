@@ -36,6 +36,14 @@ class Db{
         return $stmt->execute([':title'=>$title,':body'=>$body]);
     }
 
+    public function updatePost($id,$title,$body){
+        $id = htmlspecialchars($id);
+        $title = htmlspecialchars($title);
+        $body = htmlspecialchars($body);
+        $stmt = $this->conn->prepare("UPDATE `blog` SET `title` = :title, `body` = :body WHERE `blog`.`id` = :id");
+        return $stmt->execute([':title'=>$title,':body'=>$body,':id'=>$id]);
+    }
+
     public function insertedId(){
         return $this->conn->lastInsertId();
     }
