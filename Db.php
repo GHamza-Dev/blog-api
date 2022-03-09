@@ -44,6 +44,12 @@ class Db{
         return $stmt->execute([':title'=>$title,':body'=>$body,':id'=>$id]);
     }
 
+    public function deletePost($id){
+        $id = htmlspecialchars($id);
+        $stmt = $this->conn->prepare("DELETE FROM `blog` WHERE `blog`.`id` = :id");
+        return $stmt->execute([':id'=>$id]);
+    }
+
     public function insertedId(){
         return $this->conn->lastInsertId();
     }

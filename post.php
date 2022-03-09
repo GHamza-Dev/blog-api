@@ -48,6 +48,17 @@ function post($id = 1){
         }
         return;
     }
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+        if ($db->deletePost($id)) {
+            header("HTTP/1.0 200 Deleted successfully");
+            echo json_encode(['message'=>'Post Deleted Successfully']);
+        }else {
+            header("HTTP/1.0 500 Something went wrong");
+            echo json_encode(['message_err'=>'Error 500']);
+        }
+        return;
+    }
 
     $data['data'] = $db->selectPostById($id);
     echo json_encode($data);
